@@ -60,7 +60,7 @@ jobs:
       - name: Checkout the NixOS-EMN-Config repo
         uses: 'actions/checkout@v2'
         with:
-          repository: 'thierry-kosamera/emn-org-config'
+          repository: 'thierry-kosamera/emn-org-config@master'
           path: 'org-config'
           ssh-key: '${{ secrets.NIXOS_EMN_CONFIG_DEPLOY_KEY }}'
           persist-credentials: false
