@@ -18,26 +18,26 @@ on:
 
 jobs:
 
-  update_nixos_robot_keys:
-    runs-on: 'ubuntu-latest'
-    steps:
-      - name: Checkout the NixOS repo
-        uses: 'actions/checkout@v2'
-        with:
-          persist-credentials: false
+  # update_nixos_robot_keys:
+  #   runs-on: 'ubuntu-latest'
+  #   steps:
+  #     - name: Checkout the NixOS repo
+  #       uses: 'actions/checkout@v2'
+  #       with:
+  #         persist-credentials: false
 
-      - name: Checkout the NixOS-EMN-Config repo
-        uses: 'actions/checkout@v2'
-        with:
-          repository: 'thierry-kosamera/emn-org-config'
-          path: 'org-config'
-          ssh-key: '${{ secrets.NIXOS_EMN_CONFIG_DEPLOY_KEY }}'
-          persist-credentials: false
+  #     - name: Checkout the NixOS-EMN-Config repo
+  #       uses: 'actions/checkout@v2'
+  #       with:
+  #         repository: 'thierry-kosamera/emn-org-config'
+  #         path: 'org-config'
+  #         ssh-key: '${{ secrets.NIXOS_EMN_CONFIG_DEPLOY_KEY }}'
+  #         persist-credentials: false
 
-      - name: Install the Nix package manager
-        uses: cachix/install-nix-action@master
-        with:
-          nix_path: nixpkgs=https://nix-channel-redirect.ocb.msf.org/nixexprs.tar.xz
+  #     - name: Install the Nix package manager
+  #       uses: cachix/install-nix-action@master
+  #       with:
+  #         nix_path: nixpkgs=https://nix-channel-redirect.ocb.msf.org/nixexprs.tar.xz
 
       # - name: Update the NixOS Robot SSH keys (dry run)
       #   run: >-
@@ -80,79 +80,79 @@ jobs:
           --tunnel_config_path './org-config/json/tunnels.d'"
 
 
-  build:
-    runs-on: 'ubuntu-latest'
-    needs:
-      - encrypt_secrets
-      - update_nixos_robot_keys
-    strategy:
-      matrix:
-        # When changing these settings, you need to change as well
-        # the required checks in the branch protection policy on GitHub !!
-        group_count: [ 5 ]
-        group_id: [ 0, 1, 2, 3, 4 ]
-    steps:
-      - name: Checkout the NixOS repo
-        uses: 'actions/checkout@v2'
-        with:
-          persist-credentials: false
+  # build:
+  #   runs-on: 'ubuntu-latest'
+  #   needs:
+  #     - encrypt_secrets
+  #     - update_nixos_robot_keys
+  #   strategy:
+  #     matrix:
+  #       # When changing these settings, you need to change as well
+  #       # the required checks in the branch protection policy on GitHub !!
+  #       group_count: [ 5 ]
+  #       group_id: [ 0, 1, 2, 3, 4 ]
+  #   steps:
+  #     - name: Checkout the NixOS repo
+  #       uses: 'actions/checkout@v2'
+  #       with:
+  #         persist-credentials: false
 
-      - name: Checkout the Nixos-EMN-Config repo
-        uses: 'actions/checkout@v2'
-        with:
-          repository: 'thierry-kosamera/emn-org-config'
-          path: 'org-config'
-          ssh-key: '${{ secrets.NIXOS_EMN_CONFIG_DEPLOY_KEY }}'
-          persist-credentials: false
+  #     - name: Checkout the Nixos-EMN-Config repo
+  #       uses: 'actions/checkout@v2'
+  #       with:
+  #         repository: 'thierry-kosamera/emn-org-config'
+  #         path: 'org-config'
+  #         ssh-key: '${{ secrets.NIXOS_EMN_CONFIG_DEPLOY_KEY }}'
+  #         persist-credentials: false
 
-      - name: Install the Nix package manager
-        uses: 'cachix/install-nix-action@master'
-        with:
-          nix_path: 'nixpkgs=https://nix-channel-redirect.ocb.msf.org/nixexprs.tar.xz'
+  #     - name: Install the Nix package manager
+  #       uses: 'cachix/install-nix-action@master'
+  #       with:
+  #         nix_path: 'nixpkgs=https://nix-channel-redirect.ocb.msf.org/nixexprs.tar.xz'
 
-      - name: Configure the Panic Button Cachix cache
-        uses: 'cachix/cachix-action@master'
-        with:
-          name: 'panic-button'
-          skipPush: true
-        continue-on-error: true
+  #     - name: Configure the Panic Button Cachix cache
+  #       uses: 'cachix/cachix-action@master'
+  #       with:
+  #         name: 'panic-button'
+  #         skipPush: true
+  #       continue-on-error: true
 
-      - name: Build the NixOS configurations
-        run: >-
-          nix-shell ./scripts/python_nixostools/shell.nix --run
-          "build_nixos_configs
-          --group_amount ${{ matrix.group_count }}
-          --group_id ${{ matrix.group_id }}"
+  #     - name: Build the NixOS configurations
+  #       run: >-
+  #         nix-shell ./scripts/python_nixostools/shell.nix --run
+  #         "build_nixos_configs
+  #         --group_amount ${{ matrix.group_count }}
+  #         --group_id ${{ matrix.group_id }}"
 
 
-  build_iso:
-    runs-on: 'ubuntu-latest'
-    steps:
-      - name: Checkout the NixOS repo
-        uses: 'actions/checkout@v2'
-        with:
-          persist-credentials: false
+  # build_iso:
+  #   runs-on: 'ubuntu-latest'
+  #   steps:
+  #     - name: Checkout the NixOS repo
+  #       uses: 'actions/checkout@v2'
+  #       with:
+  #         persist-credentials: false
 
-      - name: Checkout the NixOS-EMN-Config repo
-        uses: 'actions/checkout@v2'
-        with:
-          repository: 'thierry-kosamera/emn-org-config'
-          path: 'org-config'
-          ssh-key: '${{ secrets.NIXOS_EMN_CONFIG_DEPLOY_KEY }}'
-          persist-credentials: false
+  #     - name: Checkout the NixOS-EMN-Config repo
+  #       uses: 'actions/checkout@v2'
+  #       with:
+  #         repository: 'thierry-kosamera/emn-org-config'
+  #         path: 'org-config'
+  #         ssh-key: '${{ secrets.NIXOS_EMN_CONFIG_DEPLOY_KEY }}'
+  #         persist-credentials: false
 
-      - name: Install the Nix package manager
-        uses: 'cachix/install-nix-action@master'
-        with:
-          nix_path: 'nixpkgs=https://nix-channel-redirect.ocb.msf.org/nixexprs.tar.xz'
+  #     - name: Install the Nix package manager
+  #       uses: 'cachix/install-nix-action@master'
+  #       with:
+  #         nix_path: 'nixpkgs=https://nix-channel-redirect.ocb.msf.org/nixexprs.tar.xz'
 
-      - name: Build the ISO image
-        run: >-
-          touch ./local/id_tunnel_iso &&
-          nix-instantiate
-          '<nixpkgs/nixos>'
-          -A config.system.build.isoImage
-          -I nixos-config='rescue_iso/iso.nix'
+  #     - name: Build the ISO image
+  #       run: >-
+  #         touch ./local/id_tunnel_iso &&
+  #         nix-instantiate
+  #         '<nixpkgs/nixos>'
+  #         -A config.system.build.isoImage
+  #         -I nixos-config='rescue_iso/iso.nix'
 
 
   # deploy:
