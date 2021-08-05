@@ -145,7 +145,7 @@ def write_secrets(encrypted_secrets_list: List[EncryptedSecrets],
     print(f'ERROR : failed to write generated secrets file')
     print(traceback.format_exc())
     return False
-  print(f'Wrote generated secrets',output_path,GENERATED_SECRETS_FILENAME)
+  print(f'Wrote generated secrets',content)
   return True
 
 
