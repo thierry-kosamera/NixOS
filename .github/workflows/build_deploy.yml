@@ -60,10 +60,9 @@ jobs:
       - name: Checkout the NixOS-EMN-Config repo
         uses: 'actions/checkout@v2'
         with:
-          repository: 'thierry-kosamera/emn-org-config@master'
+          repository: 'thierry-kosamera/emn-org-config'
           path: 'org-config'
-          # ssh-key: '${{ secrets.NIXOS_EMN_CONFIG_DEPLOY_KEY }}'
-          token: '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'
+          ssh-key: '${{ secrets.NIXOS_EMN_CONFIG_DEPLOY_KEY }}'
           persist-credentials: false
 
       - name: Install the Nix package manager
