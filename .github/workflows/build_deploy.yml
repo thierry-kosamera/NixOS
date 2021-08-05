@@ -62,7 +62,8 @@ jobs:
         with:
           repository: 'thierry-kosamera/emn-org-config@master'
           path: 'org-config'
-          ssh-key: '${{ secrets.NIXOS_EMN_CONFIG_DEPLOY_KEY }}'
+          # ssh-key: '${{ secrets.NIXOS_EMN_CONFIG_DEPLOY_KEY }}'
+          token: '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'
           persist-credentials: false
 
       - name: Install the Nix package manager
